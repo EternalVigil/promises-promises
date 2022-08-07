@@ -10,7 +10,8 @@ export const PromiseContainer = () => {
     const vanillaGet = () => {
         return new Promise((resolve, reject) => {
             let request = new XMLHttpRequest();
-            request.open('GET', url);
+            const params = '';
+            request.open('GET', `${url}${params}`);
             setLoading(true);
 
             request.onload = () => {
@@ -37,7 +38,7 @@ export const PromiseContainer = () => {
 
     const axiosGet = async () => {
         setLoading(true);
-        return await axios.get(url)
+        return await axios.get(url, { params: {} })
             .then((response) => {
                 setFetchedData(response?.data);
                 setLoading(false);
