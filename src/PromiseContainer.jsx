@@ -35,6 +35,15 @@ export const PromiseContainer = () => {
         });
     };
 
+    const fetchGet = async () => {
+        await fetch(url).then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            setFetchedData(data);
+        })
+    };
+
     const axiosGet = async () => {
         setLoading(true);
         return await axios.get(url)
@@ -58,6 +67,11 @@ export const PromiseContainer = () => {
             <div>
                 <button onClick={handleVanillaGet}>
                     Vanilla Promise
+                </button>
+            </div>
+            <div>
+                <button onClick={fetchGet}>
+                    Fetch Promise
                 </button>
             </div>
             <div>
