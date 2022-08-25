@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { GET_ACTIVITY } from './queries/activity';
+import { useLazyQuery } from '@apollo/client';
 
+// TODO - move to constants / env
 const url = 'https://www.boredapi.com/api/activity';
 
 export const PromiseContainer = () => {
@@ -58,9 +61,24 @@ export const PromiseContainer = () => {
             });
     };
 
+    const restGQL = () => {
+        setLoading(true);
+        fetchData({});
+    };
+
     const handleClearData = () => {
         setFetchedData(null);
     };
+
+    const [fetchData, {data: gqlData,loading: gqlLoading}] = useLazyQuery(GET_ACTIVITY);
+
+    useEffect(() => {
+        setLoading(gqlLoading);
+
+        if(gqlData) {
+            setFetchedData(gqlData?.activity);
+        }
+    }, [gqlLoading]);
 
     return(
         <div>
@@ -78,6 +96,11 @@ export const PromiseContainer = () => {
             <div>
                 <button onClick={axiosGet}>
                     Axios Promise
+                </button>
+            </div>
+            <div>
+                <button onClick={restGQL}>
+                    REST GQL
                 </button>
             </div>
             <div>

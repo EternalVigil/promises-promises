@@ -3,11 +3,24 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { RestLink } from 'apollo-link-rest';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+// TODO - move to constants / env
+const restLink = new RestLink({ uri: "https://www.boredapi.com/api/" });
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: restLink
+});
+
 root.render(
   <React.StrictMode>
-    <App />
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
   </React.StrictMode>
 );
 
