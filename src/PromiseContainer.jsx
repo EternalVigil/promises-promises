@@ -40,12 +40,16 @@ export const PromiseContainer = () => {
     };
 
     const fetchGet = async () => {
+        setLoading(true);
         await fetch(url).then((response) => {
             return response.json();
         })
         .then((data) => {
             setFetchedData(data);
         })
+        .finally(() => {
+            setLoading(false);
+        });
     };
 
     const axiosGet = async () => {
@@ -62,7 +66,6 @@ export const PromiseContainer = () => {
     };
 
     const restGQL = () => {
-        setLoading(true);
         fetchData({});
     };
 
@@ -70,7 +73,9 @@ export const PromiseContainer = () => {
         setFetchedData(null);
     };
 
-    const [fetchData, {data: gqlData,loading: gqlLoading}] = useLazyQuery(GET_ACTIVITY);
+    const [fetchData, {data: gqlData,loading: gqlLoading}] = useLazyQuery(GET_ACTIVITY, {
+        fetchPolicy: 'network-only',
+    });
 
     useEffect(() => {
         setLoading(gqlLoading);
